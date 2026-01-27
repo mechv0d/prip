@@ -1,0 +1,22 @@
+/* Базовые стили для каркаса (mobile-first) */
+:root{
+    --bg:#f7f7f9;
+    --accent:#2b7cff;
+    --muted:#6b6b6b;
+}
+*{box-sizing:border-box}
+body{
+    font-family: Inter, Roboto, Arial, sans-serif;
+    margin:0;
+    background:var(--bg);
+    color:#111;
+    -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:390px;margin:0 auto;padding:16px}
+.site-header{background:#fff;border-bottom:1px solid #e6e6e6;padding:12px 0}
+.logo{font-weight:700;color:var(--accent);text-decoration:none}
+.container{padding:18px}
+.nav a{color:var(--accent);text-decoration:none}
+.site-footer{padding:16px;text-align:center;color:var(--muted);font-size:13px}
+
+
