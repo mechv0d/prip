@@ -1,3 +1,8 @@
+<?php
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+?>
 <!doctype html>
 <html lang="ru">
 <head>
@@ -12,5 +17,15 @@
             <a class="logo" href="/">Мой Не Сам</a>
         </div>
     </header>
-
+    <nav class="site-nav">
+        <div class="wrap">
+            <?php if (!empty($_SESSION['user'])): ?>
+                <span class="nav-greeting">Привет, <?= htmlspecialchars($_SESSION['user']['fio'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?></span>
+                <a class="nav-link" href="logout.php">Выход</a>
+            <?php else: ?>
+                <a class="nav-link" href="register.php">Регистрация</a>
+                <a class="nav-link" href="login.php">Вход</a>
+            <?php endif; ?>
+        </div>
+    </nav>
 
