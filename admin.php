@@ -67,6 +67,10 @@ if ($isAdmin && isset($_POST['action']) && $_POST['action'] === 'change_status')
     if ($reqId <= 0 || $newStatus <= 0) {
         $errors[] = 'Неверные параметры для обновления';
     } else {
+        // Для статуса "Отменено" (id = 3) комментарий обязателен
+        if ($newStatus === 3 && $adminComment === '') {
+            $errors[] = 'При установке статуса "Отменено" комментарий обязателен';
+        } else {
         // Убедимся, что в таблице request есть колонка admin_comment; если нет — попытаемся добавить
         try {
             $colCheck = $pdo->prepare("SHOW COLUMNS FROM `request` LIKE 'admin_comment'");
@@ -78,17 +82,18 @@ if ($isAdmin && isset($_POST['action']) && $_POST['action'] === 'change_status')
             // если не удалось изменить схему — продолжим без сохранения комментария
         }
 
-        // Обновляем статус и комментарий
-        $updateSql = "UPDATE request SET id_status = :st";
-        if ($adminComment !== '') {
-            $updateSql .= ", admin_comment = :ac";
+            // Обновляем статус и комментарий
+            $updateSql = "UPDATE request SET id_status = :st";
+            if ($adminComment !== '') {
+                $updateSql .= ", admin_comment = :ac";
+            }
+            $updateSql .= " WHERE id = :id";
+            $upd = $pdo->prepare($updateSql);
+            $params = [':st' => $newStatus, ':id' => $reqId];
+            if ($adminComment !== '') { $params[':ac'] = $adminComment; }
+            $upd->execute($params);
+            $message = 'Статус заявки обновлён.';
         }
-        $updateSql .= " WHERE id = :id";
-        $upd = $pdo->prepare($updateSql);
-        $params = [':st' => $newStatus, ':id' => $reqId];
-        if ($adminComment !== '') { $params[':ac'] = $adminComment; }
-        $upd->execute($params);
-        $message = 'Статус заявки обновлён.';
     }
 }
 
@@ -182,6 +187,26 @@ $statuses = $pdo->query('SELECT id, name, code FROM status ORDER BY id')->fetchA
         <?php endforeach; ?>
     <?php endif; ?>
 </main>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    // Require admin_comment when selecting status "Отменено" (id = 3)
+    document.querySelectorAll('.status-form').forEach(function (form) {
+        form.addEventListener('submit', function (ev) {
+            var sel = form.querySelector('select[name="id_status"]');
+            var comment = form.querySelector('input[name="admin_comment"]');
+            if (!sel || !comment) return;
+            var val = parseInt(sel.value, 10);
+            if (val === 3 && comment.value.trim() === '') {
+                ev.preventDefault();
+                alert('При установке статуса "Отменено" комментарий обязателен');
+                comment.focus();
+                return false;
+            }
+        });
+    });
+});
+</script>
 
 <?php require_once __DIR__ . '/templates/footer.php'; ?>
 

@@ -42,11 +42,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     if (empty($errors)) {
-        // Проверим уникальность логина/email
-        $stmt = $pdo->prepare('SELECT id FROM user WHERE login = :login OR email = :email LIMIT 1');
-        $stmt->execute([':login' => $values['login'], ':email' => $values['email']]);
+        // Проверим уникальность логина
+        $stmt = $pdo->prepare('SELECT id FROM user WHERE login = :login LIMIT 1');
+        $stmt->execute([':login' => $values['login']]);
         if ($stmt->fetch()) {
-            $errors[] = 'Пользователь с таким логином или email уже существует';
+            $errors[] = 'Пользователь с таким логином уже существует';
         } else {
             $hash = password_hash($password, PASSWORD_DEFAULT);
             $insert = $pdo->prepare('INSERT INTO user (fio, login, password, email, phone, id_role) VALUES (:fio, :login, :password, :email, :phone, 1)');
@@ -64,7 +64,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 'login' => $values['login'],
                 'id_role' => 1
             ];
-            header('Location: index.php');
+            header('Location: create_request.php');
             exit;
         }
     }

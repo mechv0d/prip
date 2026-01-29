@@ -24,7 +24,7 @@ if (session_status() === PHP_SESSION_NONE) {
                 <a class="nav-link" href="logout.php">Выход</a>
             <?php else: ?>
                 <a class="nav-link" href="register.php">Регистрация</a>
-                <a class="nav-link" href="login.php">Вход</a>
+                <a class="nav-link" href="index.php">Вход</a>
             <?php endif; ?>
         </div>
     </nav>

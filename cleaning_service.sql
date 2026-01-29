@@ -197,7 +197,6 @@ ALTER TABLE `status`
 ALTER TABLE `user`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `login` (`login`),
-  ADD UNIQUE KEY `email` (`email`),
   ADD KEY `id_role` (`id_role`);
 
 --

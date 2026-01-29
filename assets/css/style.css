@@ -244,9 +244,14 @@ button:active, .button:active, .btn:active {
 
 /* Список заявок (Grid) */
 .requests-list {
-    display: grid;
+    display: flex;
+    flex-direction: column;
     gap: 16px;
-    margin-top: 20px;
+    margin-top: 40px;
+}
+
+.requests-list h3 {
+    margin: 0;
 }
 
 @media (min-width: 700px) {
