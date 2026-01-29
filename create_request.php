@@ -6,7 +6,6 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-// Только для аутентифицированных пользователей
 if (empty($_SESSION['user'])) {
     header('Location: login.php');
     exit;
@@ -14,13 +13,11 @@ if (empty($_SESSION['user'])) {
 
 $userId = $_SESSION['user']['id'];
 
-// Покажем флеш-сообщение, если есть
 $flash = $_SESSION['flash'] ?? '';
 if (!empty($_SESSION['flash'])) {
     unset($_SESSION['flash']);
 }
 
-// Получим историю заявок текущего пользователя
 $historyStmt = $pdo->prepare('
     SELECT r.id, r.datetime, r.adress, r.user_phone, s.name AS service_name, st.name AS status_name, o.name AS oplata_name
     FROM request r

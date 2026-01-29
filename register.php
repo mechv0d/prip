@@ -42,7 +42,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     if (empty($errors)) {
-        // Проверим уникальность логина
         $stmt = $pdo->prepare('SELECT id FROM user WHERE login = :login LIMIT 1');
         $stmt->execute([':login' => $values['login']]);
         if ($stmt->fetch()) {

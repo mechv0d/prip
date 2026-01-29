@@ -1,5 +1,4 @@
 <?php
-// Простое подключение к базе через PDO. Отредактируйте константы под вашу среду.
 define('DB_HOST', '127.0.0.1');
 define('DB_NAME', 'cleaning_service');
 define('DB_USER', 'root');
@@ -17,7 +16,6 @@ try {
         ]
     );
 } catch (PDOException $e) {
-    // В продакшене логируйте вместо вывода
     exit('Database connection failed: ' . $e->getMessage());
 }
 

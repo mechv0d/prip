@@ -4,8 +4,6 @@ require_once __DIR__ . '/includes/db.php';
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
-
-// If user already logged in, redirect by role (admin id = 2)
 if (!empty($_SESSION['user'])) {
     if (intval($_SESSION['user']['id_role'] ?? 0) === 2) {
         header('Location: admin.php');
@@ -38,7 +36,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if (password_verify($password, $stored)) {
                 $ok = true;
             } elseif ($password === $stored) {
-                // Устаревшая хранимая пароля в открытом виде — позволим вход и обновим хеш
                 $ok = true;
                 $newHash = password_hash($password, PASSWORD_DEFAULT);
                 $upd = $pdo->prepare('UPDATE user SET password = :ph WHERE id = :id');
@@ -52,7 +49,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     'login' => $user['login'],
                     'id_role' => $user['id_role']
                 ];
-                // Redirect based on role: admin -> admin panel, others -> create request
                 if (intval($user['id_role']) === 2) {
                     header('Location: admin.php');
                 } else {

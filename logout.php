@@ -1,5 +1,4 @@
 <?php
-// Выход — уничтожаем сессию и перенаправляем на главную
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }

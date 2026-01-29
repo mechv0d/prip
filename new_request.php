@@ -6,7 +6,6 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-// Только для аутентифицированных пользователей
 if (empty($_SESSION['user'])) {
     header('Location: login.php');
     exit;
@@ -15,7 +14,6 @@ if (empty($_SESSION['user'])) {
 $userId = $_SESSION['user']['id'];
 $errors = [];
 
-// Получим список услуг и типов оплаты из БД
 $servicesStmt = $pdo->query('SELECT id, name FROM services ORDER BY id');
 $services = $servicesStmt->fetchAll();
 $oplataStmt = $pdo->query('SELECT id, name FROM oplata ORDER BY id');
@@ -56,13 +54,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $insert->execute([
             ':id_user' => $userId,
             ':id_services' => $id_services,
-            ':id_status' => 1, // New
+        ':id_status' => 1,
             ':id_oplata' => $id_oplata,
             ':datetime' => $datetime,
             ':adress' => $adress,
             ':user_phone' => $user_phone
         ]);
-        // флеш-сообщение и редирект на страницу истории
         $_SESSION['flash'] = 'Заявка успешно создана.';
         header('Location: create_request.php');
         exit;

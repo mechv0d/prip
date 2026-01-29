@@ -10,13 +10,11 @@ $isAdmin = !empty($_SESSION['user']) && intval($_SESSION['user']['id_role'] ?? 0
 $errors = [];
 $message = '';
 
-// Простая админ-аутентификация: допустимо использовать учетку из БД с ролью admin или спец. логин 'adminka'/'password'
 if (isset($_POST['admin_login'], $_POST['admin_password']) && !$isAdmin) {
     $login = trim($_POST['admin_login']);
     $password = $_POST['admin_password'];
 
     if ($login === 'adminka' && $password === 'password') {
-        // Временная сессия админа
         $_SESSION['user'] = [
             'id' => 0,
             'fio' => 'Администратор',
@@ -25,7 +23,6 @@ if (isset($_POST['admin_login'], $_POST['admin_password']) && !$isAdmin) {
         ];
         $isAdmin = true;
     } else {
-        // Попробуем найти пользователя в БД с ролью admin
         $stmt = $pdo->prepare('SELECT id, fio, login, password, id_role FROM user WHERE login = :login LIMIT 1');
         $stmt->execute([':login' => $login]);
         $user = $stmt->fetch();
@@ -35,7 +32,6 @@ if (isset($_POST['admin_login'], $_POST['admin_password']) && !$isAdmin) {
             if (password_verify($password, $stored)) {
                 $ok = true;
             } elseif ($password === $stored) {
-                // устаревшая открытая строчка
                 $ok = true;
                 $newHash = password_hash($password, PASSWORD_DEFAULT);
                 $upd = $pdo->prepare('UPDATE user SET password = :ph WHERE id = :id');
@@ -58,7 +54,6 @@ if (isset($_POST['admin_login'], $_POST['admin_password']) && !$isAdmin) {
     }
 }
 
-// Действие по смене статуса заявки
 if ($isAdmin && isset($_POST['action']) && $_POST['action'] === 'change_status') {
     $reqId = intval($_POST['request_id'] ?? 0);
     $newStatus = intval($_POST['id_status'] ?? 0);
@@ -67,11 +62,9 @@ if ($isAdmin && isset($_POST['action']) && $_POST['action'] === 'change_status')
     if ($reqId <= 0 || $newStatus <= 0) {
         $errors[] = 'Неверные параметры для обновления';
     } else {
-        // Для статуса "Отменено" (id = 3) комментарий обязателен
         if ($newStatus === 3 && $adminComment === '') {
             $errors[] = 'При установке статуса "Отменено" комментарий обязателен';
         } else {
-        // Убедимся, что в таблице request есть колонка admin_comment; если нет — попытаемся добавить
         try {
             $colCheck = $pdo->prepare("SHOW COLUMNS FROM `request` LIKE 'admin_comment'");
             $colCheck->execute();
@@ -79,10 +72,8 @@ if ($isAdmin && isset($_POST['action']) && $_POST['action'] === 'change_status')
                 $pdo->exec("ALTER TABLE `request` ADD COLUMN `admin_comment` varchar(255) DEFAULT NULL");
             }
         } catch (Exception $e) {
-            // если не удалось изменить схему — продолжим без сохранения комментария
         }
 
-            // Обновляем статус и комментарий
             $updateSql = "UPDATE request SET id_status = :st";
             if ($adminComment !== '') {
                 $updateSql .= ", admin_comment = :ac";
@@ -98,7 +89,6 @@ if ($isAdmin && isset($_POST['action']) && $_POST['action'] === 'change_status')
 }
 
 if (!$isAdmin) {
-    // Форма логина админа
     ?>
     <main class="wrap">
         <h2>Вход в панель администратора</h2>
@@ -116,16 +106,13 @@ if (!$isAdmin) {
     exit;
 }
 
-// Админ: убедимся, что колонка admin_comment существует, затем показываем список всех заявок
 try {
     $colCheck = $pdo->prepare("SHOW COLUMNS FROM `request` LIKE 'admin_comment'");
     $colCheck->execute();
     if ($colCheck->rowCount() === 0) {
-        // Попробуем добавить колонку (возможно, база в read-only — тогда пропустим)
         $pdo->exec("ALTER TABLE `request` ADD COLUMN `admin_comment` varchar(255) DEFAULT NULL");
     }
 } catch (Exception $e) {
-    // Не критично — если не получилось добавить колонку, запрос ниже уберёт ссылку на неё
 }
 
 $stmt = $pdo->query('
@@ -190,7 +177,6 @@ $statuses = $pdo->query('SELECT id, name, code FROM status ORDER BY id')->fetchA
 
 <script>
 document.addEventListener('DOMContentLoaded', function () {
-    // Require admin_comment when selecting status "Отменено" (id = 3)
     document.querySelectorAll('.status-form').forEach(function (form) {
         form.addEventListener('submit', function (ev) {
             var sel = form.querySelector('select[name="id_status"]');
