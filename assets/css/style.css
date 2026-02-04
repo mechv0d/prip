@@ -1,26 +1,24 @@
-/* ------------------------------------------------------------
-   СТРОГИЙ ГЕОМЕТРИЧЕСКИЙ ДИЗАЙН (SQUARE UI)
-   ------------------------------------------------------------ */
+
 
    :root {
-    /* Цветовая палитра */
-    --bg-body: #f0f2f5;          /* Светло-серый фон страницы */
-    --bg-surface: #ffffff;       /* Белый для карточек и форм */
     
-    /* Акцент (Синий и оттенки) */
-    --primary: #0055ff;          /* Яркий основной синий */
-    --primary-hover: #0044cc;    /* Темнее при наведении */
-    --primary-light: #e6f0ff;    /* Очень светлый синий для фона */
+    --bg-body: #f0f2f5;          
+    --bg-surface: #ffffff;       
     
-    /* Текст */
-    --text-main: #111827;        /* Почти черный */
-    --text-muted: #6b7280;       /* Серый текст */
     
-    /* Границы и состояния */
+    --primary: #0055ff;          
+    --primary-hover: #0044cc;    
+    --primary-light: #e6f0ff;    
+    
+    
+    --text-main: #111827;        
+    --text-muted: #6b7280;       
+    
+    
     --border-color: #d1d5db;
     --border-focus: #0055ff;
     
-    /* Статусы */
+    
     --error-bg: #fff5f5;
     --error-text: #c53030;
     --error-border: #fc8181;
@@ -29,17 +27,15 @@
     --success-text: #276749;
     --success-border: #9ae6b4;
 
-    /* Размеры */
+    
     --max-width: 1000px;
     --gap: 20px;
     
-    /* ГЕОМЕТРИЯ: КВАДРАТЫ */
+    
     --radius: 0px; 
 }
 
-/* ---------------------------
-   Сброс и База
-   --------------------------- */
+
 *, *::before, *::after {
     box-sizing: border-box;
 }
@@ -58,7 +54,7 @@ body {
     -webkit-font-smoothing: antialiased;
 }
 
-/* Ссылки */
+
 a {
     color: var(--primary);
     text-decoration: none;
@@ -69,20 +65,18 @@ a:hover {
     text-decoration: underline;
 }
 
-/* Заголовки */
+
 h1, h2, h3 {
     margin: 0 0 16px 0;
     font-weight: 700;
-    letter-spacing: -0.02em; /* Чуть плотнее */
+    letter-spacing: -0.02em; 
     color: var(--text-main);
 }
 
 h1 { font-size: 28px; }
 h2 { font-size: 22px; }
 
-/* ---------------------------
-   Layout (Сетка)
-   --------------------------- */
+
 .wrap, .container {
     max-width: var(--max-width);
     margin: 0 auto;
@@ -93,12 +87,10 @@ main {
     padding: 24px 0;
 }
 
-/* ---------------------------
-   Header & Nav
-   --------------------------- */
+
 .site-header {
     background: var(--bg-surface);
-    border-bottom: 2px solid var(--primary); /* Акцентная линия снизу */
+    border-bottom: 2px solid var(--primary); 
     padding: 16px 0;
 }
 
@@ -117,6 +109,20 @@ main {
     padding: 10px 0;
 }
 
+.site-header .wrap {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--gap);
+}
+
+.site-nav .wrap {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 8px;
+}
+
 .site-nav .nav-link {
     display: inline-block;
     margin-right: 2px;
@@ -124,7 +130,7 @@ main {
     color: var(--text-main);
     font-weight: 500;
     text-decoration: none;
-    /* Анимация подчеркивания */
+    
     background: linear-gradient(to right, var(--primary) 0%, var(--primary) 100%);
     background-size: 0% 2px;
     background-repeat: no-repeat;
@@ -137,9 +143,7 @@ main {
     color: var(--primary);
 }
 
-/* ---------------------------
-   Forms (Квадратный стиль)
-   --------------------------- */
+
 .form label, 
 .request-form label {
     display: block;
@@ -160,7 +164,7 @@ select {
     padding: 12px 16px;
     background: var(--bg-surface);
     border: 1px solid var(--border-color);
-    border-radius: var(--radius); /* Квадрат */
+    border-radius: var(--radius); 
     font-family: inherit;
     font-size: 15px;
     color: var(--text-main);
@@ -168,13 +172,13 @@ select {
     box-shadow: inset 0 1px 2px rgba(0,0,0,0.02);
 }
 
-/* Анимация фокуса инпутов */
+
 input:focus,
 textarea:focus,
 select:focus {
     outline: none;
     border-color: var(--primary);
-    box-shadow: 0 0 0 3px rgba(0, 85, 255, 0.1); /* Легкое свечение */
+    box-shadow: 0 0 0 3px rgba(0, 85, 255, 0.1); 
 }
 
 textarea {
@@ -182,9 +186,7 @@ textarea {
     min-height: 120px;
 }
 
-/* ---------------------------
-   Buttons (Анимация и Стиль)
-   --------------------------- */
+
 button, .button, .btn {
     display: inline-block;
     background: var(--primary);
@@ -194,23 +196,25 @@ button, .button, .btn {
     font-size: 15px;
     font-weight: 600;
     cursor: pointer;
-    border-radius: var(--radius); /* Квадрат */
+    border-radius: var(--radius); 
     text-decoration: none;
     text-align: center;
     
-    /* Анимация */
+    
     transition: transform 0.15s ease, background-color 0.2s ease, box-shadow 0.2s ease;
     box-shadow: 0 2px 4px rgba(0, 85, 255, 0.2);
 }
 
 button:hover, .button:hover, .btn:hover {
     background: var(--primary-hover);
-    transform: translateY(-2px); /* Приподнимается вверх */
+    color: #fff;
+    text-decoration: none !important;
+    transform: translateY(-2px); 
     box-shadow: 0 6px 12px rgba(0, 85, 255, 0.3);
 }
 
 button:active, .button:active, .btn:active {
-    transform: translateY(0); /* Вдавливается обратно */
+    transform: translateY(0); 
     box-shadow: 0 1px 2px rgba(0, 85, 255, 0.2);
     opacity: 0.9;
 }
@@ -227,22 +231,20 @@ button:active, .button:active, .btn:active {
     color: #fff;
 }
 
-/* ---------------------------
-   Components & Panels
-   --------------------------- */
 
-/* Форма создания заявки */
+
+
 .request-form {
     background: var(--bg-surface);
     padding: 30px;
     border: 1px solid var(--border-color);
     border-radius: var(--radius);
     margin-bottom: 24px;
-    /* Легкая тень для объема */
+    
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
 }
 
-/* Список заявок (Grid) */
+
 .requests-list {
     display: flex;
     flex-direction: column;
@@ -265,7 +267,7 @@ button:active, .button:active, .btn:active {
     }
 }
 
-/* Карточка заявки */
+
 .request-item, .admin-request {
     background: var(--bg-surface);
     border: 1px solid var(--border-color);
@@ -302,7 +304,7 @@ button:active, .button:active, .btn:active {
     font-size: 15px;
 }
 
-/* Alerts / Notifications */
+
 .errors, .success {
     padding: 16px;
     margin-bottom: 20px;
@@ -324,12 +326,10 @@ button:active, .button:active, .btn:active {
     border-left: 4px solid var(--success-border);
 }
 
-/* ---------------------------
-   Admin Panel Specifics
-   --------------------------- */
+
 .admin-panel .admin-request {
     margin-bottom: 16px;
-    border-left: 4px solid var(--primary); /* Акцентная полоса слева */
+    border-left: 4px solid var(--primary); 
 }
 
 .status-form {
@@ -346,7 +346,7 @@ button:active, .button:active, .btn:active {
     color: var(--text-muted);
 }
 
-/* Таблицы (если есть) */
+
 table {
     width: 100%;
     border-collapse: collapse;
@@ -364,9 +364,7 @@ th {
     font-weight: 600;
 }
 
-/* ---------------------------
-   Footer
-   --------------------------- */
+
 .site-footer {
     border-top: 1px solid var(--border-color);
     padding: 24px 0;
@@ -377,15 +375,32 @@ th {
     font-size: 14px;
 }
 
-/* Утилиты */
+
 .muted { color: var(--text-muted); }
 .text-center { text-align: center; }
 
-/* Адаптивность для мобильных */
+
 @media (max-width: 600px) {
     .request-form {
         padding: 20px;
     }
     h1 { font-size: 24px; }
-    button, .button { width: 100%; } /* Кнопки на всю ширину на мобильных */
+    button, .button { width: 100%; } 
+    
+    .site-header .wrap,
+    .site-nav .wrap {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .logo {
+        text-align: center;
+        width: 100%;
+        margin-bottom: 8px;
+    }
+    .site-nav .nav-link {
+        display: block;
+        width: 100%;
+        margin: 6px 0;
+        padding: 12px 16px;
+    }
 }
